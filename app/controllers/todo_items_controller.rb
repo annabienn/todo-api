@@ -11,9 +11,9 @@ class TodoItemsController < ApplicationController
     item = @todo.todo_items.build(todo_item_params)
 
     if item.save
-      render json: item, status: :created
+      render_created_item(item)
     else
-      render json: { errors: item.errors.full_messages }, status: :unprocessable_entity
+      render_item_errors(item)
     end
   end
 
@@ -21,7 +21,7 @@ class TodoItemsController < ApplicationController
     if @item.update(todo_item_params)
       render json: @item, status: :ok
     else
-      render json: { errors: @item.errors.full_messages }, status: :unprocessable_entity
+      render_item_errors(@item)
     end
   end
 
@@ -42,5 +42,13 @@ class TodoItemsController < ApplicationController
 
   def todo_item_params
     params.require(:todo_item).permit(:name, :done)
+  end
+
+  def render_created_item(item)
+    render json: item, status: :created
+  end
+
+  def render_item_errors(item)
+    render json: { errors: item.errors.full_messages }, status: :unprocessable_entity
   end
 end

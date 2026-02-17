@@ -31,7 +31,7 @@ class TodosController < ApplicationController
 
   def destroy
     @todo.destroy
-    render json: { message: "Todo deleted" }, status: :ok
+    render_todo_deleted
   end
 
   private
@@ -42,5 +42,9 @@ class TodosController < ApplicationController
 
   def todo_params
     params.require(:todo).permit(:title)
+  end
+
+  def render_todo_deleted
+    render json: { message: "Todo deleted" }, status: :ok
   end
 end
